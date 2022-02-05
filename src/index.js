@@ -27,6 +27,9 @@ app.use(express.urlencoded({ limit: '100mb', extended: true }))
 
 app.use('/', userRouter)
 app.use('/', fileSystemRouter)
+app.get('/',(req, res)=>{
+    res.status(200).send("app running")
+})
 app.listen(3000, () => {
     console.log(`Server running on port ${3000}`)
 })
