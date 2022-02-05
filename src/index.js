@@ -6,7 +6,7 @@ const fileSystemRouter = require('./routes/fileUpload')
 let mongoose = require('mongoose');
 const jwt = require('jsonwebtoken');
 
-const port = process.env.port || 3000
+const port = 443|| 443
 require('./database/mongo')
 
 const app = express()
