@@ -6,7 +6,7 @@ const fileSystemRouter = require('./routes/fileUpload')
 let mongoose = require('mongoose');
 const jwt = require('jsonwebtoken');
 
-
+const port = process.env.port || 3000
 require('./database/mongo')
 
 const app = express()
@@ -27,6 +27,6 @@ app.use(express.urlencoded({ limit: '100mb', extended: true }))
 
 app.use('/', userRouter)
 app.use('/', fileSystemRouter)
-app.listen(4050, () => {
-    console.log(`Server running on port ${4050}`)
+app.listen(port, () => {
+    console.log(`Server running on port ${port}`)
 })
