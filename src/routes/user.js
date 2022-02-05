@@ -21,8 +21,12 @@ router.post('/signup', async (req, res) => {
             password: req.body.password
         })
         let response = await newUser.save()
-
-        res.status(201).send({ success: true, response: response })
+        console.log(response)
+        const token = await jwtToken(response._id, response.email)
+        res.status(201).send({
+            success: true, response:
+                { email: response.email, name: response.name, token: token }
+        })
     } catch (error) {
         console.log(error)
         return res.status(400).send({ error: true, message: "system was not able to create the user" })
@@ -34,9 +38,8 @@ router.post('/login', async (req, res) => {
 
             return res.status(400).send({ error: true, message: "please provide email password" })
         }
-        
+
         let user = await User.findOne({ email: req.body.email })
-        
 
         if (!user) {
             return res.status(400).send({ error: true, message: "user does not exists" })
@@ -47,23 +50,31 @@ router.post('/login', async (req, res) => {
         if (!isPasswordMatch) {
             return res.status(400).send({ error: true, message: "incorrect password" })
         }
+        const token = await jwtToken(user._id, user.email)
 
-        const token = jwt.sign({
-            _id: user._id,
-            email: user.email,
-            exp: Math.floor(Date.now() / 1000) + (60 * 60 * 24)
-        },
-            process.env.jwtSecret)
-
-        
-
-        
-
-        res.status(201).send({ success: true, response: { token: token, user: user } })
+        res.status(201).send({
+            success: true,
+            response:
+            {
+                token: token,
+                user: { email: user.email, name: user.name }
+            }
+        })
 
     } catch (error) {
         console.log(error)
-        return res.status(400).send({ error: true, message: error})
+        return res.status(400).send({ error: true, message: error })
     }
 })
 module.exports = router
+
+const jwtToken = async (id, email) => {
+    const token = jwt.sign({
+        _id: id,
+        email: email,
+        exp: Math.floor(Date.now() / 1000) + (60 * 60 * 24)
+    },
+        process.env.jwtSecret)
+
+    return token
+} 
