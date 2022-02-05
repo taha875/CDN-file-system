@@ -30,6 +30,6 @@ app.use('/', fileSystemRouter)
 app.get('/',(req, res)=>{
     res.status(200).send("app running")
 })
-app.listen(3000, () => {
+app.listen(process.env.port || 3000, () => {
     console.log(`Server running on port ${3000}`)
 })
