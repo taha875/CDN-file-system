@@ -8,7 +8,7 @@
   },
   "scripts": {
     "dev": "nodemon ./src/index.js",
-    "start":"node ./src/index.js"
+    "start": "node ./src/index.js"
   },
   "keywords": [],
   "author": "",
@@ -22,7 +22,9 @@
     "mongodb": "^4.3.1",
     "mongoose": "^6.2.0",
     "multer": "^1.4.4",
-    "slugify": "^1.6.5"
+    "path": "^0.12.7",
+    "slugify": "^1.6.5",
+    "uuid": "^8.3.2"
   },
   "devDependencies": {
     "nodemon": "^2.0.15"

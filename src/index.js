@@ -3,6 +3,7 @@ require('dotenv').config()
 const cors = require('cors')
 const userRouter = require('./routes/user')
 const fileSystemRouter = require('./routes/fileUpload')
+const downloadRouter = require('./routes/download')
 let mongoose = require('mongoose');
 const jwt = require('jsonwebtoken');
 
@@ -27,6 +28,7 @@ app.use(express.urlencoded({ limit: '100mb', extended: true }))
 
 app.use('/', userRouter)
 app.use('/', fileSystemRouter)
+app.use('/file', downloadRouter)
 app.get('/',(req, res)=>{
     res.status(200).send("app running")
 })
