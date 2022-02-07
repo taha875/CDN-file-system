@@ -42,6 +42,7 @@ router.post('/document', async (req, res) => {
             const file = new Files({
                 filename: req.file.filename,
                 uuid: uuidv4(),
+                originalname:req.file.originalname,
                 path: req.file.path,
                 size: req.file.size,
     
@@ -56,51 +57,16 @@ router.post('/document', async (req, res) => {
 
     }
 })
-// router.route('/document')
-//     .post(upload.single('document'),
+router.get('/documents', async(req, res)=>{
+    try{
+        console.log("inside document router")
+        let data = await Files.find({})
+        
+        res.status(200).send({success:true, data:data})
+    }catch(error){
+        return res.status(500).send({error:true, message:"error occured while fetching files metadata"})
 
-//         (req, res, next) => {
-//             try {
-//                 if (!req || !req.file) {
-//                     throw {
-//                         code: 400,
-//                         message: "please provide a file"
-//                     }
-//                 }
-//                 return res.status(200).send({ success: true, response: req.file })
+    }
+})
 
-//             } catch (error) {
-//                 let code = error.code || 500
-//                 let message = error.message || JSON.stringify(error)
-//                 return res.status(code).send({ error: true, message: message })
-//             }
-
-//         })
-
-
-function convertUnixTime(time) {
-
-    let unixtimestamp = time
-
-    let months_arr = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
-
-    let date = new Date(unixtimestamp * 1000);
-
-    let year = date.getFullYear();
-
-    let month = months_arr[date.getMonth()];
-
-    let day = date.getDate();
-
-    let hours = date.getHours();
-
-    let minutes = date.getMinutes();
-
-    let seconds = date.getSeconds();
-
-    let readableTime = `${day}-${month}-${year}T${hours}:${minutes}:${seconds}`;
-    return readableTime
-
-
-}
 module.exports = router 
